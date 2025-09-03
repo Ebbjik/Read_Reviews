@@ -10,6 +10,10 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
+#include <QPainter>
+#include <QPainterPath>
+#include <QPixmap>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   // 创建中央窗口部件
   QWidget *central = new QWidget(this);
@@ -21,13 +25,33 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   // 用户信息区域
   QHBoxLayout *userInfoLayout = new QHBoxLayout;
   QLabel *avatar = new QLabel;
+
+  avatar->setFixedSize(64, 64);     // 例如：64x64 的头像尺寸
+  avatar->setScaledContents(false); // 关闭自适应缩放
   // 设置头像图片
   QPixmap pixmap(":/resources/image.png"); // 使用资源路径
-  if (pixmap.isNull()) {
-    qDebug() << "图片加载失败，路径:" << ":/resources/image.png";
-  } else {
-    avatar->setPixmap(pixmap);
+  if (!pixmap.isNull()) {
+    // 确保图片是正方形
+    int side = qMin(pixmap.width(), pixmap.height());
+    QPixmap squarePixmap = pixmap.copy(
+        (pixmap.width() - side) / 2, (pixmap.height() - side) / 2, side, side);
+
+    // 创建一个与正方形图片相同大小的空白 pixmap
+    QPixmap circularPixmap(squarePixmap.size());
+    circularPixmap.fill(Qt::transparent);
+
+    // 使用 QPainter 绘制圆形头像
+    QPainter painter(&circularPixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    QBrush brush(squarePixmap);
+    painter.setBrush(brush);
+    painter.drawEllipse(0, 0, squarePixmap.width(), squarePixmap.height());
+
+    // 设置裁剪后的图片到 QLabel
+    avatar->setPixmap(circularPixmap);
     avatar->setScaledContents(true); // 使图片适应 QLabel 的大小
+  } else {
+    qDebug() << "图片加载失败，路径:" << ":/resources/image.png";
   }
 
   QLabel *usernameLabel = new QLabel("你好，xxx/未登录");

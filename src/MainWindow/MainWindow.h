@@ -2,19 +2,18 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QPushButton>
+#include <QStackedWidget>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
-
 public:
   explicit MainWindow(QWidget *parent = nullptr);
 
 private slots:
-  void handleButton();
+  void switchPage();
 
 private:
-  QPushButton *button;
+  QStackedWidget *stackedWidget;
 };
 
 #endif // MAINWINDOW_H

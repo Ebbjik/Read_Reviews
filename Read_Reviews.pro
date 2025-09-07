@@ -2,9 +2,8 @@ TEMPLATE = app
 CONFIG += console c++17
 QT += widgets
 
-# 自动包含 src 目录下的所有 cpp/h 文件
-SOURCES += $$files(src/*.cpp)
-HEADERS += $$files(src/*.h)
+include(./pris/sources.pri)
+include(./pris/headers.pri)
 
 # 设置构建输出目录
 DESTDIR = build        # 可执行文件放到 build/

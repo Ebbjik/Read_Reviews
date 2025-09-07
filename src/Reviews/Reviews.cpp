@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "Reviews.h"
 #include <QDebug>
 #include <QFrame>
 #include <QHBoxLayout>
@@ -14,7 +14,7 @@
 #include <QPainterPath>
 #include <QPixmap>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
+Reviews::Reviews(QWidget *parent) : QMainWindow(parent) {
   // 创建中央窗口部件
   QWidget *central = new QWidget(this);
   setCentralWidget(central);
@@ -97,6 +97,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
   resize(400, 300);
 }
 
-void MainWindow::handleButton() {
+void Reviews::handleButton() {
   QMessageBox::information(this, "提示", "按钮被点击");
 }
